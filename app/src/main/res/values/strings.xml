@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">GG Files Viewer</string>
+    <string name="status_format_author">Формат .gg • Автор: 777GDONLINE</string>
+    <string name="create_gg_file">Создать GG-файл</string>
+    <string name="open_gg_file">Открыть GG-файл</string>
+    <string name="save_gg_file">Сохранить .gg</string>
+    <string name="editor_hint">Содержимое GG-файла...</string>
+    <string name="status_new_file">Новый файл • TYPE=%1$s</string>
+    <string name="toast_enter_text_save">Введите текст и нажмите «Сохранить .gg»</string>
+    <string name="error_open_file">Не удалось открыть файл</string>
+    <string name="status_opened_file">Открыт файл • TYPE=%1$s</string>
+    <string name="error_opening">Ошибка открытия: %1$s</string>
+    <string name="error_save_file">Не удалось сохранить файл</string>
+    <string name="status_saved">Сохранено • TYPE=%1$s</string>
+    <string name="toast_gg_saved">GG-файл сохранён</string>
+    <string name="error_saving">Ошибка сохранения: %1$s</string>
+</resources>
