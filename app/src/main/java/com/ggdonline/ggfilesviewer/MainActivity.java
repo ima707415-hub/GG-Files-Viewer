@@ -140,12 +140,12 @@ public class MainActivity extends Activity {
             String raw = out.toString("UTF-8");
             currentType = "TEXT";
             String body = raw;
-            if (raw.startsWith("GGFILE\\n") || raw.startsWith("GGFILE\\r\\n")) {
-                String[] lines = raw.split("\\\\r?\\\\n", -1);
+            if (raw.startsWith("GGFILE\n") || raw.startsWith("GGFILE\r\n")) {
+                String[] lines = raw.split("\\r?\\n", -1);
                 StringBuilder content = new StringBuilder();
                 boolean inBody = false;
                 for (String line : lines) {
-                    if (inBody) content.append(line).append("\\n");
+                    if (inBody) content.append(line).append("\n");
                     else if (line.startsWith("TYPE=")) currentType = line.substring(5).trim();
                     else if (line.trim().isEmpty()) inBody = true;
                 }
@@ -167,8 +167,8 @@ public class MainActivity extends Activity {
             if (openedExisting && content.startsWith("GGFILE")) {
                 full = content;
             } else {
-                full = "GGFILE\\nVERSION=2.0\\nTYPE=" + currentType
-                        + "\\nAUTHOR=777GDONLINE\\n\\n" + content;
+                full = "GGFILE\nVERSION=2.0\nTYPE=" + currentType
+                        + "\nAUTHOR=777GDONLINE\n\n" + content;
             }
             out.write(full.getBytes(StandardCharsets.UTF_8));
             out.flush();
