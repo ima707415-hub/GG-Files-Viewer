@@ -5,18 +5,15 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.Gravity;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 
 public class MainActivity extends Activity {
@@ -44,35 +41,35 @@ public class MainActivity extends Activity {
         root.setBackgroundColor(0xFFF5F7FB);
 
         TextView title = new TextView(this);
-        title.setText("GG Files Viewer");
+        title.setText(R.string.app_name);
         title.setTextSize(26);
         title.setTextColor(0xFF202B42);
         title.setGravity(Gravity.CENTER);
         root.addView(title, new LinearLayout.LayoutParams(-1, dp(58)));
 
         status = new TextView(this);
-        status.setText("Формат .gg • Автор: 777GDONLINE");
+        status.setText(R.string.status_format_author);
         status.setTextSize(13);
         status.setTextColor(0xFF526078);
         status.setGravity(Gravity.CENTER);
         root.addView(status, new LinearLayout.LayoutParams(-1, dp(34)));
 
-        Button create = makeButton("Создать GG-файл");
+        Button create = makeButton(getString(R.string.create_gg_file));
         create.setOnClickListener(v -> {
             editor.setText("");
             currentType = "TEXT";
             openedExisting = false;
-            status.setText("Новый файл • TYPE=TEXT");
-            Toast.makeText(this, "Введите текст и нажмите «Сохранить .gg»", Toast.LENGTH_SHORT).show();
+            status.setText(getString(R.string.status_new_file, currentType));
+            Toast.makeText(this, R.string.toast_enter_text_save, Toast.LENGTH_SHORT).show();
         });
         root.addView(create, buttonParams());
 
-        Button open = makeButton("Открыть GG-файл");
+        Button open = makeButton(getString(R.string.open_gg_file));
         open.setOnClickListener(v -> openPicker());
         root.addView(open, buttonParams());
 
         editor = new EditText(this);
-        editor.setHint("Содержимое GG-файла...");
+        editor.setHint(R.string.editor_hint);
         editor.setTextSize(16);
         editor.setGravity(Gravity.TOP | Gravity.START);
         editor.setPadding(dp(12), dp(12), dp(12), dp(12));
@@ -81,7 +78,7 @@ public class MainActivity extends Activity {
         editorParams.topMargin = dp(12);
         root.addView(editor, editorParams);
 
-        Button save = makeButton("Сохранить .gg");
+        Button save = makeButton(getString(R.string.save_gg_file));
         save.setOnClickListener(v -> savePicker());
         root.addView(save, buttonParams());
 
@@ -136,19 +133,19 @@ public class MainActivity extends Activity {
     private void readUri(Uri uri) {
         try (InputStream in = getContentResolver().openInputStream(uri);
              ByteArrayOutputStream out = new ByteArrayOutputStream()) {
-            if (in == null) throw new Exception("Не удалось открыть файл");
+            if (in == null) throw new Exception(getString(R.string.error_open_file));
             byte[] buffer = new byte[4096];
             int count;
             while ((count = in.read(buffer)) != -1) out.write(buffer, 0, count);
             String raw = out.toString("UTF-8");
             currentType = "TEXT";
             String body = raw;
-            if (raw.startsWith("GGFILE\n") || raw.startsWith("GGFILE\r\n")) {
-                String[] lines = raw.split("\\r?\\n", -1);
+            if (raw.startsWith("GGFILE\\n") || raw.startsWith("GGFILE\\r\\n")) {
+                String[] lines = raw.split("\\\\r?\\\\n", -1);
                 StringBuilder content = new StringBuilder();
                 boolean inBody = false;
                 for (String line : lines) {
-                    if (inBody) content.append(line).append("\n");
+                    if (inBody) content.append(line).append("\\n");
                     else if (line.startsWith("TYPE=")) currentType = line.substring(5).trim();
                     else if (line.trim().isEmpty()) inBody = true;
                 }
@@ -156,30 +153,30 @@ public class MainActivity extends Activity {
             }
             editor.setText(body);
             openedExisting = true;
-            status.setText("Открыт файл • TYPE=" + currentType);
+            status.setText(getString(R.string.status_opened_file, currentType));
         } catch (Exception e) {
-            Toast.makeText(this, "Ошибка открытия: " + e.getMessage(), Toast.LENGTH_LONG).show();
+            Toast.makeText(this, getString(R.string.error_opening, e.getMessage()), Toast.LENGTH_LONG).show();
         }
     }
 
     private void writeUri(Uri uri) {
         try (OutputStream out = getContentResolver().openOutputStream(uri)) {
-            if (out == null) throw new Exception("Не удалось сохранить файл");
+            if (out == null) throw new Exception(getString(R.string.error_save_file));
             String content = editor.getText().toString();
             String full;
             if (openedExisting && content.startsWith("GGFILE")) {
                 full = content;
             } else {
-                full = "GGFILE\nVERSION=2.0\nTYPE=" + currentType
-                        + "\nAUTHOR=777GDONLINE\n\n" + content;
+                full = "GGFILE\\nVERSION=2.0\\nTYPE=" + currentType
+                        + "\\nAUTHOR=777GDONLINE\\n\\n" + content;
             }
             out.write(full.getBytes(StandardCharsets.UTF_8));
             out.flush();
             openedExisting = true;
-            status.setText("Сохранено • TYPE=" + currentType);
-            Toast.makeText(this, "GG-файл сохранён", Toast.LENGTH_SHORT).show();
+            status.setText(getString(R.string.status_saved, currentType));
+            Toast.makeText(this, R.string.toast_gg_saved, Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
-            Toast.makeText(this, "Ошибка сохранения: " + e.getMessage(), Toast.LENGTH_LONG).show();
+            Toast.makeText(this, getString(R.string.error_saving, e.getMessage()), Toast.LENGTH_LONG).show();
         }
     }
 }
