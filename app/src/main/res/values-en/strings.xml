@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">GG Files Viewer</string>
+    <string name="status_format_author">.gg format • Author: 777GDONLINE</string>
+    <string name="create_gg_file">Create GG file</string>
+    <string name="open_gg_file">Open GG file</string>
+    <string name="save_gg_file">Save .gg</string>
+    <string name="editor_hint">GG file contents...</string>
+    <string name="status_new_file">New file • TYPE=%1$s</string>
+    <string name="toast_enter_text_save">Enter text and tap “Save .gg”</string>
+    <string name="error_open_file">Unable to open file</string>
+    <string name="status_opened_file">File opened • TYPE=%1$s</string>
+    <string name="error_opening">Error opening file: %1$s</string>
+    <string name="error_save_file">Unable to save file</string>
+    <string name="status_saved">Saved • TYPE=%1$s</string>
+    <string name="toast_gg_saved">GG file saved</string>
+    <string name="error_saving">Error saving file: %1$s</string>
+</resources>
